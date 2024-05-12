@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2247368860267034600}
   - component: {fileID: 8960946401143479441}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Closed_gate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 2942406087168856476}
   - component: {fileID: 3610733335178671450}
   - component: {fileID: 1245038512869270579}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Closed_gate
   m_TagString: gate
   m_Icon: {fileID: 0}
@@ -224,7 +224,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1534689983064712463}
   - component: {fileID: 4222328272321792605}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Gates
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -302,7 +302,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6711066277365170881}
   - component: {fileID: 4018512676473375460}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -382,7 +382,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3517342677474178023}
   - component: {fileID: 8375633184513866352}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Closed_gate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
