@@ -10,6 +10,7 @@ public class bullet : MonoBehaviour
     public int damage;
     public LayerMask whatIsSolid;
     public float lifetime = 5f;
+    public GameObject deathEffect;
 
     private float aliveTime = 0f;
 
@@ -32,6 +33,7 @@ public class bullet : MonoBehaviour
             {
                 hitinfo.collider.GetComponent<Enemy>().TakeDamage(damage);
             }
+            Instantiate(deathEffect, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }

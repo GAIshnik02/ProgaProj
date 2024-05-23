@@ -8,9 +8,11 @@ public class gun : MonoBehaviour
     public Camera mainCamera; // Переменная для хранения ссылки на камеру
     public GameObject bullet;
     public Transform shotPoint;
-
+    
     private float timeBtwShots;
     public float startTimeBtwShots;
+    
+    
     
 
     void Update()

@@ -5,22 +5,29 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    // Start is called before the first frame update
     public float speed;
 
     private Rigidbody2D rb; 
-    private Vector2 moveInput; //сторона движения
-    private Vector2 moveVelocity; // итговая скорость
+    private Vector2 moveInput; // направление движения
+    private Vector2 moveVelocity; // итоговая скорость
+
+    private Animator animator; // ссылка на компонент Animator
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>(); // инициализация компонента Animator
     }
     
-    // Update is called once per frame
+    // Update вызывается один раз за кадр
     void Update()
     {
-        moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")); //считываем верт и гор движения
+        moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")); // считываем верт и гор движения
         moveVelocity = moveInput.normalized * speed;
+
+        
+        animator.SetFloat("MoveX", moveInput.x); // обновляем направление по X
+        animator.SetFloat("MoveY", moveInput.y); // обновляем направление по Y
     }
 
     void FixedUpdate()

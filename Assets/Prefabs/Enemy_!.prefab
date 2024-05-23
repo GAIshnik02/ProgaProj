@@ -123,6 +123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 200
   speed: 2
+  hitEffect: {fileID: 5201592339331502243, guid: d4cf80d44e49f6b4da254d10b0032e31, type: 3}
 --- !u!50 &2832691319490821906
 Rigidbody2D:
   serializedVersion: 4
