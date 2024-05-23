@@ -11,9 +11,6 @@ public class gun : MonoBehaviour
     
     private float timeBtwShots;
     public float startTimeBtwShots;
-    
-    
-    
 
     void Update()
     {
@@ -36,6 +33,5 @@ public class gun : MonoBehaviour
         {
             timeBtwShots -= Time.deltaTime;
         }
-        
     }
 }
