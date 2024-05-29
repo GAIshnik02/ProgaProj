@@ -6,12 +6,13 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float speed;
-    private Rigidbody2D rb; 
-    private Vector2 moveInput; // направление движения
-    private Vector2 moveVelocity; // итоговая скорость
+    public float health;
+    public Rigidbody2D rb; 
+    public Vector2 moveInput; // направление движения
+    public Vector2 moveVelocity; // итоговая скорость
 
     private Animator animator; // ссылка на компонент Animator
-    private bool facingRight = true; // отслеживание направления игрока
+    public bool facingRight = true; // отслеживание направления игрока
 
     void Start()
     {
@@ -51,5 +52,10 @@ public class PlayerController : MonoBehaviour
         theScale.x *= -1;
         transform.localScale = theScale;
         
+    }
+
+    public void ChangeHealth(float healthValue)
+    {
+        health += healthValue;
     }
 }

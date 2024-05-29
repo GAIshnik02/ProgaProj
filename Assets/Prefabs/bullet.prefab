@@ -102,6 +102,7 @@ MonoBehaviour:
   damage: 25
   whatIsSolid:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 320
   lifetime: 0.5
   deathEffect: {fileID: 5201592339331502243, guid: d4cf80d44e49f6b4da254d10b0032e31, type: 3}
+  enemyBullet: 0

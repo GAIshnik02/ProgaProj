@@ -1,18 +1,19 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class bullet : MonoBehaviour
+public class Bullet : MonoBehaviour
 {
     public float speed;
     public float distance;
     public int damage;
     public LayerMask whatIsSolid;
-    public float lifetime = 5f;
+    public float lifetime;
     public GameObject deathEffect;
 
     private float aliveTime = 0f;
+
+    [SerializeField] private bool enemyBullet;
 
     private void Update()
     {
@@ -20,7 +21,7 @@ public class bullet : MonoBehaviour
 
         if (aliveTime >= lifetime)
         {
-            Destroy(gameObject);
+            DestroyBullet();
             return;
         }
 
@@ -29,12 +30,21 @@ public class bullet : MonoBehaviour
         RaycastHit2D hitinfo = Physics2D.Raycast(transform.position, transform.up, distance, whatIsSolid);
         if (hitinfo.collider != null)
         {
-            if (hitinfo.collider.CompareTag("Enemy"))
+            if (hitinfo.collider.CompareTag("Enemy") && !enemyBullet)
             {
                 hitinfo.collider.GetComponent<Enemy>().TakeDamage(damage);
             }
-            Instantiate(deathEffect, transform.position, Quaternion.identity);
-            Destroy(gameObject);
+            else if (hitinfo.collider.CompareTag("Player") && enemyBullet)
+            {
+                hitinfo.collider.GetComponent<PlayerController>().ChangeHealth(-damage);
+            }
+            DestroyBullet();
         }
+    }
+
+    private void DestroyBullet()
+    {
+        Instantiate(deathEffect, transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 }
