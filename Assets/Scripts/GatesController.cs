@@ -11,13 +11,21 @@ public class RoomTrigger : MonoBehaviour
     public Transform[] enemySpawners;
     public GameObject shield;
     public GameObject healthPotion;
+    public PlayerController player;
 
     [HideInInspector] public List<GameObject> enemies;
 
     private void Start()
     {
-        Enemy[] enemies = GetComponents<Enemy>();
-        foreach (Enemy enemy in enemies)
+        player = FindObjectOfType<PlayerController>(); // Ищем объект PlayerController в сцене
+        if (player == null)
+        {
+            Debug.LogError("PlayerController not found in the scene.");
+        }
+
+        // Заполняем список врагов в комнате, если есть
+        Enemy[] enemiesArray = GetComponentsInChildren<Enemy>();
+        foreach (Enemy enemy in enemiesArray)
         {
             enemiesInRoom.Add(enemy);
         }
@@ -33,9 +41,7 @@ public class RoomTrigger : MonoBehaviour
 
     private IEnumerator StartRoomSequence()
     {
-        // Пятисекундная задержка перед закрытием ворот
         yield return new WaitForSeconds(1f);
-
         CloseDoors();
 
         foreach (Transform spawner in enemySpawners)
@@ -65,15 +71,28 @@ public class RoomTrigger : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
         yield return new WaitUntil(() => enemies.Count == 0);
+
         OpenDoors();
         roomCleared = true;
+        if (player != null)
+        {
+            Debug.Log("Room cleared, updating cleared rooms count.");
+            player.UpdateClearRooms();
+        }
+        else
+        {
+            Debug.LogError("PlayerController is not assigned.");
+        }
     }
 
     private void CloseDoors()
     {
         foreach (GameObject gate in gates)
         {
-            gate.SetActive(true); // Активируйте стены, закрывая комнату
+            if (gate != null)
+            {
+                gate.SetActive(true); // Активируйте стены, закрывая комнату
+            }
         }
     }
 
@@ -81,7 +100,10 @@ public class RoomTrigger : MonoBehaviour
     {
         foreach (GameObject wall in gates)
         {
-            Destroy(wall); // Уничтожайте стены, открывая комнату
+            if (wall != null)
+            {
+                Destroy(wall); // Уничтожайте стены, открывая комнату
+            }
         }
     }
 

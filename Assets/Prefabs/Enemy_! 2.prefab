@@ -262,7 +262,6 @@ MonoBehaviour:
   speed: 2
   hitEffect: {fileID: 5201592339331502243, guid: d4cf80d44e49f6b4da254d10b0032e31, type: 3}
   room: {fileID: 0}
-  enemyKilled: 0
 --- !u!50 &2832691319490821906
 Rigidbody2D:
   serializedVersion: 4
@@ -335,7 +334,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.1
-  m_Speed: 3
+  m_Speed: 2
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

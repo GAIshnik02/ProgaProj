@@ -1,21 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-public class ScoreCounter : MonoBehaviour
+public class ScoreCounter2 : MonoBehaviour
 {
     public TMP_Text score;
-    
+    // public TMP_Text roomsClearedText;
+
     void Start()
     {
-        // Инициализация текста счета при старте
         UpdateScore();
+        // UpdateRoomsCleared();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))
@@ -24,9 +23,13 @@ public class ScoreCounter : MonoBehaviour
         }
     }
 
-    // Метод для обновления текста счета
     public void UpdateScore()
     {
         score.text = "ENEMIES KILLED: " + Enemy.enemyKilled;
     }
+
+    // public void UpdateRoomsCleared()
+    // {
+    //     roomsClearedText.text = "ROOMS CLEARED: " + PlayerController.RoomsCleared;
+    // }
 }
