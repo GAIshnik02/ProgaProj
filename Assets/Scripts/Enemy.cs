@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
@@ -11,14 +12,20 @@ public class Enemy : MonoBehaviour
     private PlayerController player;
     private Animator animator; // ссылка на компонент Animator
     private bool facingRight = true; // отслеживание направления игрока
-
+    private NavMeshAgent agent;
     private Vector2 lastPosition;
     private bool wasMovingRight = true; // Флаг для отслеживания направления движения
+    public RoomTrigger room;
+    public static int enemyKilled = 0; // статическая переменная для подсчета убитых врагов
 
     private void Start()
     {
+        room = GetComponentInParent<RoomTrigger>();
         animator = GetComponent<Animator>();
         player = FindObjectOfType<PlayerController>();
+        agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
 
         if (player == null)
         {
@@ -34,34 +41,14 @@ public class Enemy : MonoBehaviour
         {
             return;
         }
-
-        if (health <= 0)
-        {
-            Die();
-        }
-        else
-        {
-            MoveTowardsPlayer();
-        }
-
+        
+        MoveTowardsPlayer();
         UpdateAnimatorParameters();
     }
 
     private void MoveTowardsPlayer()
     {
-        Vector2 targetPosition = player.transform.position;
-
-        // Проверяем, есть ли препятствие между врагом и игроком
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, targetPosition - (Vector2)transform.position, Vector2.Distance(transform.position, targetPosition));
-
-        if (hit.collider != null && hit.collider.CompareTag("block")) // Проверяем, является ли препятствие стеной
-        {
-            // Если есть препятствие, изменяем направление движения
-            targetPosition = (Vector2)transform.position - (targetPosition - (Vector2)transform.position).normalized;
-        }
-
-        // Продолжаем двигаться к цели
-        transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+        agent.SetDestination(player.transform.position);
     }
 
     private void UpdateAnimatorParameters()
@@ -73,31 +60,20 @@ public class Enemy : MonoBehaviour
         float moveX = movement.x / Time.deltaTime;
         float moveY = movement.y / Time.deltaTime;
         bool isMoving = movement.sqrMagnitude > 0.01f;
-
-        // if (moveX > 0.1f)
-        // {
-        //     moveX = 1;
-        // } else if (moveX < 0.1f)
-        // {
-        //     moveX = -1;
-        // }
-        //
-
-        // Update animator parameters
+        
         animator.SetFloat("MoveX", moveX);
         animator.SetFloat("MoveY", moveY);
         animator.SetBool("IsMoving", isMoving);
 
-        //TODO: БАВДЛЫБВЛЭЫЖДв СДЕЛАТЬ ЧТО_ТО С ЭТОЙ ХУЙНЕЙ
         // Проверка изменения направления движения
         if (Mathf.Abs(movement.x) > Mathf.Abs(movement.y)) // Проверяем, движется ли враг больше по оси X, чем по Y
         {
-            if (movement.x > 0)
+            if (movement.x > 0 && !wasMovingRight)
             {
                 Flip();
                 wasMovingRight = true;
             }
-            else if (movement.x < 0)
+            else if (movement.x < 0 && wasMovingRight)
             {
                 Flip();
                 wasMovingRight = false;
@@ -120,13 +96,9 @@ public class Enemy : MonoBehaviour
         health -= damageAmount;
         if (health <= 0)
         {
-            Die();
+            enemyKilled++;
+            Destroy(gameObject);
+            room.enemies.Remove(gameObject);
         }
-    }
-
-    private void Die()
-    {
-        // Добавьте любую анимацию или эффекты смерти здесь
-        Destroy(gameObject);
     }
 }

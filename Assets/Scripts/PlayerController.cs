@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,19 +12,31 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D rb; 
     public Vector2 moveInput; // направление движения
     public Vector2 moveVelocity; // итоговая скорость
-
+    public GameObject potionEffect;
+    public GameObject shield;
     private Animator animator; // ссылка на компонент Animator
     public bool facingRight = true; // отслеживание направления игрока
-
+    public TMP_Text hp_text;
+    public ShieldTimer shieldTimer;
+    public GameObject shieldEffect;
+    public GameObject panel;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>(); // инициализация компонента Animator
+        
     }
     
     // Update вызывается один раз за кадр
     void Update()
     {
+        if (health <= 0)
+        {
+            panel.SetActive(true);
+            // Destroy(gameObject);
+        }
+        
+        
         moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")); // считываем верт и гор движения
         moveVelocity = moveInput.normalized * speed;
         
@@ -54,8 +68,46 @@ public class PlayerController : MonoBehaviour
         
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Potion"))
+        {
+            Instantiate(potionEffect, other.transform.position, Quaternion.identity);
+            ChangeHealth(50);
+            Destroy(other.gameObject);
+        }
+
+        else if (other.CompareTag("Shield"))
+        {
+            if (!shield.activeInHierarchy)
+            {
+                shield.SetActive(true);
+                Instantiate(shieldEffect, other.transform.position, Quaternion.identity);
+                Destroy(other.gameObject);
+                shieldTimer.gameObject.SetActive(true);
+                shieldTimer.isCooldown = true;
+            }
+            else
+            {
+                shieldTimer.ResetTimer();
+                Instantiate(shieldEffect, other.transform.position, Quaternion.identity);
+                Destroy(other.gameObject);
+            }
+
+        }
+    }
+
+
     public void ChangeHealth(float healthValue)
     {
-        health += healthValue;
+        if (!shield.activeInHierarchy || shield.activeInHierarchy && healthValue > 0)
+        {
+            health += healthValue;
+            hp_text.text = "HP: " + health;
+        }
+        else if (shield.activeInHierarchy && healthValue < -0)
+        {
+            shieldTimer.ReduceTime(healthValue);
+        }
     }
 }

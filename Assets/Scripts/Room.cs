@@ -18,9 +18,5 @@ public class Room : MonoBehaviour
             wall.GameObject.SetActive(!contains);
         }
     }
-
-    void Start()
-    {
-        
-    }
+    
 }

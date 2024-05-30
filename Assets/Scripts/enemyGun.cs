@@ -60,7 +60,7 @@ public class enemyGun : MonoBehaviour
 
     void Shoot()
     {
-        Instantiate(bullet, shotPoint.position, shotPoint.rotation); // Используем Quaternion.identity, чтобы пули были направлены вперед
+        Instantiate(bullet, shotPoint.position, shotPoint.rotation); 
         currentAmmo--; // Уменьшаем количество патронов после выстрела
     }
 
